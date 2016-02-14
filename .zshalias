@@ -1,0 +1,182 @@
+# TERMINAL ALIASES - PERSONA IO
+# JAN 2015
+#
+
+# VARS
+EMAIL="$EMAIL"
+
+# SYSTEM --------------------------
+# SOME FROM Damian Conway
+
+alias o='open . &' # QUICK OPEN IN FINDER WITH "O"
+alias tu='top -o cpu' # QUICK LOOK AT CPU USAGE
+alias tm='top -o vsize' # QUICK LOOK AT MEMOERY USAGE
+alias cl='clear; l' # CLEAR THEN LIST
+alias a='ls -A' # LIST ALL EXCEPT LITERAL
+alias la="ls -A -l -G" # LIST ALL - EXPANDED
+alias l.='ls -d .[^.]*' # LIST HIDDEN FILES
+alias lh="ls -lh" # UNKNOWN LIST TYPE
+alias l='ls -lhGt'  #  LONG LISTING < RECENT FIRST
+alias ll='ls -lhG'  # LONG LISTING, HUMAN READABLE, NO GROUP INFO
+alias lt='ls -lt' # LIST BY LAST MODIFIED
+alias c='clear' # CLEAR TERMINAL
+alias cls='clear; ls' # CLEAR - LIST DIR
+alias h='history' # TERMINAL HISTORY
+alias cdd='cd -'  # RETURN TO THE LAST DIR CHANGED FROM
+alias md='mkdir -p' # CREATE DIR , CREATE PARENT DIR IF IT DOES EXIST
+alias up='cd ..'   # MOVE UP ONE DIR
+alias e='exit'  # EXIT CMD
+alias k9="killall -9" # KILL BY PROC ID
+alias sshalias="vim $HOME/.ssh/config -w"
+alias spell="aspell"
+alias pathcp="pwd | xclip -sel clip" # COPY PATH TP PB
+alias ports='sudo lsof -i -P | grep -i "listen"' # LIST OPEN PORTS
+alias ips="ifconfig -a | grep -o 'inet6\? \(\([0-9]\+\.[0-9]\+\.[0-9]\+\.[0-9]\+\)\|[a-fA-F0-9:]\+\)" # GET LOCAL IPS
+alias reload_shell="exec $SHELL"
+alias system-update="sudo apt-get update -y"
+alias system-upgrade="sudp apt-get upgrade -y"
+alias renew-cert="sudo le-renew-webroot"
+alias nginx-config-test="nginx -t -c /etc/nginx/nginx.conf"
+
+# ANIMATION FUNCTIONS --------------------------
+
+# GRC OVERIDES FOR LS
+#   MADE POSSIBLE THROUGH CONTRIBUTIONS FROM GENEROUS BENEFACTORS LIKE
+#   `BREW INSTALL COREUTILS`
+if $(gls &>/dev/null)
+then
+  alias g-ls="gls -F --color"
+  alias g-l="gls -lAh --color"
+  alias g-ll="gls -l --color"
+  alias g-la='gls -A --color'
+fi
+
+
+# APPS --------------------------
+alias nano="vim" # USE VIM WHEN NANO IS CALLED
+
+# LANGUAGE --------------------------
+
+# PYTHON
+alias python_dir="python -c 'from distutils.sysconfig import get_python_lib; print get_python_lib()'" # DISPLAY SYSTEM PYTHON DIR
+alias pip_update_system_packages="pip freeze > $HOME/.dotfiles/system.pip" # UPDATE ALL PIP PACKAGES
+alias pip_update="pip install -U -r $HOME/.dotfiles/system.pip" # UPDATE ALL PIP PACKAGES
+alias pip_remove_all="pip freeze | xargs pip uninstall -y" # REMOVE ALL PACKAGES
+
+#NODE
+alias nodenv_update="$(nodenv root)/plugins/node-build && npm run write-definitions"
+
+# RUBY
+alias r="rake"
+
+# RUBY AUTOCOMPLETE
+if [[ ! -o interactive ]]; then
+    return
+fi
+
+compctl -K _rbenv rbenv
+
+_rbenv() {
+  local word words completions
+  read -cA words
+  word="${words[2]}"
+
+  if [ "${#words}" -eq 2 ]; then
+    completions="$(rbenv commands)"
+  else
+    completions="$(rbenv completions "${word}")"
+  fi
+
+  reply=("${(ps:\n:)completions}")
+}
+
+# FRAMEWORKS --------------------------
+
+
+# FRAMEWORK FUNCTIONS --------------------------
+
+# DEV TOOLS --------------------------
+fpm_path=$(which php-fpm)
+alias php-fpm-start='$fpm_path' # PHP5 FPM START
+
+# NPM PACKAGE UPDATE
+alias npm_update='npm install -g npm@latest'
+
+# CONFIG DBS
+alias config_nosql="vim $HOME/www/data/config"
+
+# MONGO
+alias mongodb_start="mongod run --config $HOME/www/data/config/mongodb.yaml" # QUICK START OF MONGO
+alias mongodb_stop="mongo --eval 'db.getSiblingDB(\"admin\").shutdownServer()'" # QUICK STOP OF MONGO
+
+# RETHINKDB
+alias rethinkdb_start="rethinkdb --config-file $HOME/www/data/config/rethink_config"
+
+# REDIS
+alias redis_start="redis-server $HOME/www/data/config/local_redis.config"
+
+# GIT
+alias ungit="find . -name '.git' -exec rm -rf {} \;" # REMOVE GIT FILES
+alias glog="git log --graph --pretty=format:'%Cred%h%Creset %an: %s - %Creset %C(yellow)%d%Creset %Cgreen(%cr)%Creset' --abbrev-commit --date=relative" # PRETTY LOG alias gs='git status -sb' # SHORT / BRANCH
+alias grm="git status | grep deleted | awk '{print \$3}' | xargs git rm" # UNKNOWN
+alias n=!"git ls-files | xargs notes | awk -F: '{ print $1,$2; print $3,$4; print $5}' | grcat conf.notes " # FIND FIXME, TODO, ETC
+
+
+# VERSION TOOL FUNCTIONS --------------------------
+
+# QUICK LOCATION --------------------------
+
+alias apps="cd $HOME/www/apps" # OVERVIEW APPLICATIONS DIR
+alias www="cd $HOME/www/" # OVERVIEW GENERAL WEB DIR
+alias vhosts="cd $HOME/www/vhosts" # OVERVIEW GENERAL DIR
+alias logs="cd $HOME/www/logs" # OVERVIEW LOGS DIR
+alias database_configs="cd $HOME/www/data" # OVERVIEW DATA DIR
+alias assets_dev="cd $HOME/Desktop/ASSETS/DEVELOPMENT" # OVERVIEW DEVELOPMENT DIR
+alias android_tools="cd $HOME/Library/Android/" # OVERVIEW ANDROID TOOLS DIR
+
+# MYSQL ------------------------------------
+#alias my="mysql -u root -p" # QUICK LOGIN AS ROOT W/PASS
+#alias mysql_start="mysql.server start" # MYSQL SERVER START
+#alias mysql_stop="mysql.server stop" # MYSQL SERVER STOP
+#alias mydump="mysqldump -u root -p" # MYSQL SERVER DUMP
+
+# CONFIG FILES --------------------------
+alias ohmyzsh="vim $HOME/.oh-my-zsh" # OPEN ZSH DEFAULT CONFIG
+alias zshconfig="vim $HOME/.zshrc" # OPEN ZSH CONFIG
+alias reload="source $HOME/.zshrc && echo 'ZSH config reloaded'" # RELOAD CONFIGS
+alias ea="vim $HOME/.dotfiles/.zshalias && reload" # OPEN USER-DEFINED ALIASES
+alias ee="vim $HOME/.dotfiles/.zshenv" # OPEN USER-DEFINED ENV
+alias known-host="vim $USER/.ssh/known_hosts" # OPEN KNOWN HOST
+alias ssh-config="vim $HOME/.ssh/config" # OPEN SSH CONFIG
+alias eh="sudo vim /private/etc/hosts" # OPEN HOSTS FILE IN SUBL
+alias eg='vim .git/config' # EDIT GIT CONFIG
+alias dotconfig="vim $HOME/.dotfiles" # EDIT DOT FILES
+
+# NGINX
+alias nginx="sudo nginx"
+alias nginx_stop="sudo nginx -s stop"
+alias nginx_reload="sudo nginx -s reload"
+alias nginx_dir="cd /usr/local/etc/nginx/"
+function nginx_alias_site() {
+  sudo ln -s /usr/local/etc/nginx/sites-available/$1 /usr/local/etc/nginx/sites-enabled/$1
+}
+
+if $(grc &>/dev/null)
+then
+  GRC=`which grc`
+  if [ "$TERM" != dumb ] && [ -n GRC ]
+  then
+    alias colourify="$GRC -es --colour=auto"
+    alias configure='colourify ./configure'
+    alias diff='colourify diff'
+    alias make='colourify make'
+    alias gcc='colourify gcc'
+    alias g++='colourify g++'
+    alias as='colourify as'
+    alias gas='colourify gas'
+    alias ld='colourify ld'
+    alias netstat='colourify netstat'
+    alias ping='colourify ping'
+    alias traceroute='colourify /usr/sbin/traceroute'
+  fi
+fi

@@ -1,0 +1,50 @@
+[user]
+	name = Regi Ellis
+	email = regi@bynine.io
+[core]
+	editor = vim
+[github]
+	user = regiellis
+[mergetool]
+	keepBackup = true
+[core]
+	excludesfile = /Users/regi/.gitignore_global
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path =
+[color]
+	ui = true
+[http]
+	sslVerify = false
+[push]
+	default = current
+[alias]
+    lo  = log --oneline
+    lwg = log --graph --pretty=format:'%Cred%h%Creset %C(yellow)%an%d%Creset %s %Cgreen(%cr)%Creset' --date=relative
+    gst = status
+    gp = push
+    gra = remote add
+    grrm = remote rm
+    smupdate = submodule foreach git pull origin master --recurse-submodules
+    gd = diff
+    gds = diff --staged
+    gci = commit
+    gco = checkout
+    gcl = clone
+    gbr = branch
+    last = log -1 # show the commit message of HEAD
+    patch = add --patch # add hunks of code interactively
+    rom = rebase origin/master  #rebase against origin/master
+    # fetch from all remotes and reset to origin/master
+    fresh = !git fetch --all && git reset --hard origin/master -
+    ismerged = branch -r --merged master
+	switch = !legit switch \"$@\"
+	branches = !legit branches
+	sprout = !legit sprout \"$@\"
+	unpublish = !legit unpublish \"$@\"
+	harvest = !legit harvest \"$@\"
+	sync = !legit sync \"$@\"
+	publish = !legit publish \"$@\"
+	graft = !legit graft \"$@\"
+[pull]
+    rebase = true
